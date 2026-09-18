@@ -6,6 +6,7 @@ const scoreElement = document.querySelector('#score');
 const timeElement = document.querySelector('#time');
 const startButton = document.querySelector('#start');
 const memoryTitleElement = document.querySelector('#memoryTitle');
+const savedBestScore = localStorage.getItem('bestScore') ? JSON.parse(localStorage.getItem('bestScore')) : null;
 let startedAt = 0;
 for (let i = 0; i < 8; i++) {
     randomImages.push(`https://picsum.photos/${dimension}/${dimension}?random=${imgStart + i}`)
@@ -103,10 +104,21 @@ function checkMatch(secondElement) {
 
 
 function handleVictory() {
-    scoreElement.textContent = `Vous avez gagné en ${moves} coups et ${Math.round((Date.now() - startedAt) / 1000)} secondes !`;
+    const timeElapsed = Math.round((Date.now() - startedAt) / 1000);
+    scoreElement.textContent = `Vous avez gagné en ${moves} coups et ${timeElapsed} secondes !`;
     clearInterval(timeInterval);
     timeElement.textContent = '';
     startButton.style.display = 'block';
+
+    if (savedBestScore === null || moves < savedBestScore.moves || timeElapsed < savedBestScore.timeElapsed) {
+        addBestScore(timeElapsed);
+    }
+}
+
+function addBestScore(timeElapsed) {
+    localStorage.setItem('bestScore', JSON.stringify({moves, timeElapsed}));
+    scoreElement.textContent = `${scoreElement.textContent} (Record battu !) !`;
+    confettis();
 }
 
 function shuffle(arr) {

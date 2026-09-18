@@ -13,6 +13,11 @@ body {
 
     background-color: #c192d6;
     color: white;
+}
+
+main {
+    width: 100%;
+    height: 100vh;
 
     display: flex;
     flex-direction: column;
