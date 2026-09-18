@@ -5,6 +5,7 @@ const cardsElement = document.querySelector('.cards');
 const scoreElement = document.querySelector('#score');
 const timeElement = document.querySelector('#time');
 const startButton = document.querySelector('#start');
+const memoryTitleElement = document.querySelector('#memoryTitle');
 let startedAt = 0;
 for (let i = 0; i < 8; i++) {
     randomImages.push(`https://picsum.photos/${dimension}/${dimension}?random=${imgStart + i}`)
@@ -13,6 +14,17 @@ document.addEventListener('DOMContentLoaded', () => {
     startButton.addEventListener('click', () => {
         initGame();
     });
+
+    "Jeu du Memory".split('').forEach((word, index) => {
+        setTimeout(() => {
+            const span = document.createElement('span');
+            span.textContent = word;
+            span.classList.add('anim');
+            memoryTitleElement.appendChild(span);
+
+        }, index * 100);
+    });
+
 });
 let firstCard = null;
 let lockBoard = false;
@@ -45,46 +57,50 @@ function initGame() {
 }
 
 function handleCardClick(e) {
-    if (lockBoard) return;
-    checkMatch(e.currentTarget);
+    if (firstCard != null && firstCard.dataset.value != null) {
+
+        if (lockBoard) return;
+        checkMatch(e.currentTarget);
+    } else {
+        firstCard = e.currentTarget;
+        firstCard.classList.add('clicked');
+        firstCard.style.backgroundImage = `url(${firstCard.dataset.value})`;
+    }
 }
 
 function checkMatch(secondElement) {
-    if (firstCard != null && firstCard.dataset.value != null) {
-        if (firstCard === secondElement) {
-            return;
-        }
-        if (secondElement.dataset.value === firstCard.dataset.value) {
-            firstCard.style.border = '1px solid red';
-            secondElement.style.border = '1px solid red';
-            secondElement.style.backgroundImage = `url(${secondElement.dataset.value})`;
-            firstCard.classList.add('matched');
-            firstCard.removeEventListener('click', handleCardClick);
-            secondElement.classList.add('matched');
-            secondElement.removeEventListener('click', handleCardClick);
-            firstCard = null;
-            matchedCards++;
-        } else {
-            const tempCardElement = secondElement;
-            tempCardElement.style.backgroundImage = `url(${secondElement.dataset.value})`;
-            lockBoard = true;
-            setTimeout(() => {
-                tempCardElement.style.backgroundImage = ``;
-                firstCard.style.backgroundImage = '';
-                firstCard = null;
-                lockBoard = false;
-            }, 800);
-        }
-        moves++;
-    } else {
-        firstCard = secondElement;
-        firstCard.style.backgroundImage = `url(${firstCard.dataset.value})`;
+    if (firstCard === secondElement) {
+        return;
     }
+    secondElement.classList.add('clicked');
+    if (secondElement.dataset.value === firstCard.dataset.value) {
+        secondElement.style.backgroundImage = `url(${secondElement.dataset.value})`;
+        firstCard.classList.add('matched');
+        firstCard.removeEventListener('click', handleCardClick);
+        secondElement.classList.add('matched');
+        secondElement.removeEventListener('click', handleCardClick);
+        firstCard = null;
+        matchedCards++;
+    } else {
+        const tempCardElement = secondElement;
+        tempCardElement.style.backgroundImage = `url(${secondElement.dataset.value})`;
+        lockBoard = true;
+        setTimeout(() => {
+            tempCardElement.style.backgroundImage = ``;
+            firstCard.style.backgroundImage = '';
+            firstCard.classList.remove('clicked');
+            tempCardElement.classList.remove('clicked');
+            firstCard = null;
+            lockBoard = false;
+        }, 800);
+    }
+    moves++;
     scoreElement.textContent = `${matchedCards}/${randomImages.length} cartes associées`;
     if (matchedCards === randomImages.length) {
         handleVictory();
     }
 }
+
 
 function handleVictory() {
     scoreElement.textContent = `Vous avez gagné en ${moves} coups et ${Math.round((Date.now() - startedAt) / 1000)} secondes !`;
