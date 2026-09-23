@@ -128,8 +128,8 @@ function handleVictory() {
 
     clearInterval(timeInterval);
     timeElement.textContent = '';
+    startButton.innerHTML = 'Rejouer';
     startButton.style.display = 'block';
-    startButton.textContent = 'Rejouer';
 
     if (savedBestScore === null || moves < savedBestScore.moves || timeElapsed < savedBestScore.timeElapsed) {
         addBestScore(timeElapsed);
