@@ -7,6 +7,10 @@ Ce projet est un jeu de Memory développé en JavaScript, HTML et CSS.
 <br>
 Le but du jeu est de trouver toutes les paires de cartes identiques en un minimum de coups et de temps.
 
+## URL de Production : 
+
+> https://memory.r301.gabidut76.fr/
+
 ## Technologie utilisée :
 - HTML
 - CSS
