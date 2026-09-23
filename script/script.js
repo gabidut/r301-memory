@@ -143,11 +143,7 @@ function addBestScore(timeElapsed) {
 
     scoreElement.textContent += " (Record battu !) 🏆";
 
-    if (typeof confettis === 'function') {
-        confettis();
-    } else {
-        console.warn("La fonction confettis() n'est pas définie.");
-    }
+    confettis();
 }
 
 function fisherYatesShuffle(arr) {
