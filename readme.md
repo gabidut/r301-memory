@@ -7,6 +7,11 @@ Ce projet est un jeu de Memory développé en JavaScript, HTML et CSS.
 <br>
 Le but du jeu est de trouver toutes les paires de cartes identiques en un minimum de coups et de temps.
 
+## Technologie utilisée :
+- HTML
+- CSS
+- JavaScript
+
 ## Fonctionnalités :
 - Mélange aléatoire des cartes à chaque partie via l'algorithme de Fisher-Yates.
 - Affichage du nombre de coups et du temps écoulé.
